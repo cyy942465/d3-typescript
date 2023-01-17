@@ -1,7 +1,7 @@
 import * as d3Polygon from "d3-polygon";
 
 
-var epsilon = 1e-10;
+ epsilon = 1e-10;
 function epsilonesque(n: any) {
   return n <= epsilon && n >= -epsilon;
 }
@@ -18,7 +18,7 @@ function linearDependent(v0: any, v1: any) {
 }
 // 判断是否为凸多边形
 function polygonDirection(polygon: any[]) {
-  var sign, crossproduct, p0, p1, p2, v0, v1, i;
+   sign, crossproduct, p0, p1, p2, v0, v1, i;
 
   //begin: initialization
   p0 = polygon[polygon.length - 2];
@@ -75,7 +75,7 @@ function polygonClip(clip: any, subject: any) {
   // https://en.wikipedia.org/wiki/Sutherland–Hodgman_algorithm
   // https://observablehq.com/@d3/polygonclip
 
-  var input,
+   input,
     closed = polygonClosed(subject),
     i = -1,
     n = clip.length - polygonClosed(clip),
@@ -125,7 +125,7 @@ function polygonInside(p: any, a: any, b: any) {
 // Intersect two infinite lines cd and ab.
 // Return Infinity if cd and ab colinear
 function polygonIntersect(c: any, d: any, a: any, b: any) {
-  var x1 = c[0],
+   x1 = c[0],
     x3 = a[0],
     x21 = d[0] - x1,
     x43 = b[0] - x3,
@@ -139,7 +139,7 @@ function polygonIntersect(c: any, d: any, a: any, b: any) {
 
 // Returns true if the polygon is closed.
 function polygonClosed(coordinates: any[]) {
-  var a = coordinates[0],
+   a = coordinates[0],
     b = coordinates[coordinates.length - 1];
   // 起始xy坐标重合时返回true -> 1，否则返回false -> 0
   return Number(!(a[0] - b[0] || a[1] - b[1]));
@@ -147,18 +147,18 @@ function polygonClosed(coordinates: any[]) {
 
 // IN: HEdge edge
 function getFacesOfDestVertex(edge: any) {
-  var faces:any[] = [];
-  var previous = edge;
-  var first = edge.dest;
-  var site = first.originalObject;
-  var neighbours:any[] = [];
+   faces:any[] = [];
+   previous = edge;
+   first = edge.dest;
+   site = first.originalObject;
+   neighbours:any[] = [];
   do {
     previous = previous.twin.prev;
-    var siteOrigin = previous.orig.originalObject;
+     siteOrigin = previous.orig.originalObject;
     if (!siteOrigin.isDummy) {
       neighbours.push(siteOrigin);
     }
-    var iFace = previous.iFace;
+     iFace = previous.iFace;
     if (iFace.isVisibleFromBelow()) {
       faces.push(iFace);
     }
@@ -167,23 +167,23 @@ function getFacesOfDestVertex(edge: any) {
   return faces;
 }
 function computePowerDiagramIntegrated(sites: any, boundingSites: any, clippingPolygon: any) {
-  var convexHull: any = new convexHull();
+   convexHull: any = new convexHull();
   convexHull.clear();
   convexHull.init(boundingSites, sites);
 
-  var facets = convexHull.compute(sites);
-  var polygons:any[] = []; 
-  var verticesVisited:any[] = [];
-  var facetCount = facets.length;
+   facets = convexHull.compute(sites);
+   polygons:any[] = []; 
+   verticesVisited:any[] = [];
+   facetCount = facets.length;
 
-  for (var i = 0; i < facetCount; i++) {
-    var facet = facets[i];
+  for ( i = 0; i < facetCount; i++) {
+     facet = facets[i];
     if (facet.isVisibleFromBelow()) {
-      for (var e = 0; e < 3; e++) {
+      for ( e = 0; e < 3; e++) {
         // go through the edges and start to build the polygon by going through the double connected edge list
-        var edge = facet.edges[e];
-        var destVertex = edge.dest;
-        var site = destVertex.originalObject; 
+         edge = facet.edges[e];
+         destVertex = edge.dest;
+         site = destVertex.originalObject; 
 
         if (!verticesVisited[destVertex.index]) {
           verticesVisited[destVertex.index] = true;
@@ -192,16 +192,16 @@ function computePowerDiagramIntegrated(sites: any, boundingSites: any, clippingP
             continue;
           }
           // faces around the vertices which correspond to the polygon corner points
-          var faces = getFacesOfDestVertex(edge);
-          var protopoly:any[] = [];
-          var lastX = null;
-          var lastY = null;
-          var dx = 1;
-          var dy = 1;
-          for (var j = 0; j < faces.length; j++) {
-            var point = faces[j].getDualPoint();
-            var x1 = point.x;
-            var y1 = point.y;
+           faces = getFacesOfDestVertex(edge);
+           protopoly:any[] = [];
+           lastX = null;
+           lastY = null;
+           dx = 1;
+           dy = 1;
+          for ( j = 0; j < faces.length; j++) {
+             point = faces[j].getDualPoint();
+             x1 = point.x;
+             y1 = point.y;
             if (lastX !== null && lastY !== null) {
               dx = lastX - x1;
               dy = lastY - y1;
@@ -221,7 +221,7 @@ function computePowerDiagramIntegrated(sites: any, boundingSites: any, clippingP
           
           site.nonClippedPolygon = protopoly.reverse();
           if (!site.isDummy && d3Polygon.polygonLength(site.nonClippedPolygon) > 0) {
-            var clippedPoly = polygonClip(clippingPolygon, site.nonClippedPolygon);
+             clippedPoly = polygonClip(clippingPolygon, site.nonClippedPolygon);
             site.polygon = clippedPoly;
             clippedPoly.site = site;
             if (clippedPoly.length > 0) {
