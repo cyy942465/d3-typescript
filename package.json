@@ -3,6 +3,7 @@
     "d3-dispatch": "^3.0.1",
     "d3-polygon": "^3.0.1",
     "d3-timer": "^3.0.1",
+    "d3-voronoi-map": "^2.1.1",
     "d3-weighted-voronoi": "^1.1.3"
   }
 }
